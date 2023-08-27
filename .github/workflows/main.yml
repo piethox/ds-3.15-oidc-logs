@@ -1,0 +1,73 @@
+name: Deploy node.js express with serverless framework using OIDC and enable logs
+run-name: ${{ github.actor }} is implementing nodejs with serverless using OIDC and enable cloudwatch logs
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: "ap-southeast-1"
+
+permissions:
+  id-token: write
+
+jobs:
+  pre-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
+
+  install-dependencies:
+    runs-on: ubuntu-latest
+    needs: pre-deploy
+    steps:
+      - name: Check out repo code
+        uses: actions/checkout@v3
+      - name: Run installation of dependencies command
+        run: npm install
+
+  unit-testing:
+    runs-on: ubuntu-latest
+    needs: install-dependencies
+    steps:
+      - name: Check out repo code
+        uses: actions/checkout@v3
+      - name: Run installation of dependencies command
+        run: npm install
+      - name: Run unit testing
+        run: npm test
+
+  package-scan:
+    runs-on: ubuntu-latest
+    needs: unit-testing
+    steps:
+      - name: Check out repo code
+        uses: actions/checkout@v3
+      - name: Run installation of dependencies command
+        run: npm install
+      - name: Run unit testing
+        run: npm test
+      - name: Run package scanning
+        run: npm audit
+
+  deploy-serverless:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: use node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::255945442255:role/ds-oidc-prod
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Display Identity
+        run: aws sts get-caller-identity
+      - name: Run NPM clean install
+        run: npm ci
+      - name: Install Serverless Framework
+        run: npm install -g serverless
+      - name: Serverless Deploy
+        run: serverless deploy --stage prod --verbose
