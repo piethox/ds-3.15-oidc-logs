@@ -20,3 +20,5 @@ For OIDC Setup :
 - https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 
 
+## Log screenshot
+<img width="1312" alt="image" src="https://github.com/piethox/ds-3.15-oidc-logs/assets/127754707/a9776518-0144-4c5f-9d8f-0c13c69aca53">
