@@ -3,7 +3,7 @@ David Module 3.15 Assignment with OIDC and Cloudwatch Logs on serverless express
 
 ## What are being used ?
 - node.js express
-- dependencies : express, jest, winston, and serverless
+- dependencies : express, jest and serverless
 - OpenID Connect for AWS IAM deployment
 - Github actions CI/CD pipeline
 

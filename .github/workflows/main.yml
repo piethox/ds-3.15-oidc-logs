@@ -1,5 +1,5 @@
-name: Deploy node.js express with serverless framework using OIDC and enable logs
-run-name: ${{ github.actor }} is implementing nodejs with serverless using OIDC and enable cloudwatch logs
+name: Deploy node.js express with serverless framework using OIDC
+run-name: ${{ github.actor }} is implementing nodejs with serverless using OIDC
 
 on:
   push:
@@ -70,5 +70,7 @@ jobs:
         run: npm ci
       - name: Install Serverless Framework
         run: npm install -g serverless
+      - name: Install Serverless-offline
+        run: npm install serverless-offline -save-dev
       - name: Serverless Deploy
         run: serverless deploy --stage prod --verbose
